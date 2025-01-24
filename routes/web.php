@@ -1,18 +1,20 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 
 class Task
 {
     public function __construct(
-        public int $id,
-        public string $title,
-        public string $description,
+        public int     $id,
+        public string  $title,
+        public string  $description,
         public ?string $long_description,
-        public bool $completed,
-        public string $created_at,
-        public string $updated_at
-    ) {
+        public bool    $completed,
+        public string  $created_at,
+        public string  $updated_at
+    )
+    {
     }
 }
 
@@ -63,17 +65,21 @@ Route::get('/', function () {
 // access a Blade template
 Route::get('/blade', function () use ($tasks) {
     // pass the sub-phrase that precedes .blade.php i.e. index (of index.blade.php), with variables
-    return view('index', [
-        // note that the HTML elements are escaped and displayed as literally given, blocking cross-site scripting attacks;
-        // HTML elements would have to be defined in the template instead
-        'name' => 'JimJom<script></script>',
+    return view('list', [
         'tasks' => $tasks,
     ]);
-})->name('tasks.show');
+})->name('tasks.list');
 
 Route::get('/blade/{id}', function ($id) use ($tasks) {
-    // pass the sub-phrase that precedes .blade.php i.e. index (of index.blade.php), with variables
-    return 'Task selected: ' . $id . ', ' . $tasks[$id - 1]->title;
+    // users may manually enter the ID, so guard against overflows first
+    $task = collect($tasks)->firstWhere('id', $id);
+
+    if (!$task) {
+        abort(ResponseAlias::HTTP_NOT_FOUND);
+    }
+
+    return view('show', ['task' => $task]);
+
 })->name('tasks.index');
 
 $routeList = 'To list all routes defined here (and a few others defined by Laravel), enter: php artisan route:list' . PHP_EOL;
