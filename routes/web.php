@@ -1,61 +1,7 @@
 <?php
 
+use App\Models\Task;
 use Illuminate\Support\Facades\Route;
-use Symfony\Component\HttpFoundation\Response as ResponseAlias;
-
-class Task
-{
-    public function __construct(
-        public int     $id,
-        public string  $title,
-        public string  $description,
-        public ?string $long_description,
-        public bool    $completed,
-        public string  $created_at,
-        public string  $updated_at
-    )
-    {
-    }
-}
-
-$tasks = [
-    new Task(
-        1,
-        'Buy groceries',
-        'Task 1 description',
-        'Task 1 long description',
-        false,
-        '2023-03-01 12:00:00',
-        '2023-03-01 12:00:00'
-    ),
-    new Task(
-        2,
-        'Sell old stuff',
-        'Task 2 description',
-        null,
-        false,
-        '2023-03-02 12:00:00',
-        '2023-03-02 12:00:00'
-    ),
-    new Task(
-        3,
-        'Learn programming',
-        'Task 3 description',
-        'Task 3 long description',
-        true,
-        '2023-03-03 12:00:00',
-        '2023-03-03 12:00:00'
-    ),
-    new Task(
-        4,
-        'Take dogs for a walk',
-        'Task 4 description',
-        null,
-        false,
-        '2023-03-04 12:00:00',
-        '2023-03-04 12:00:00'
-    ),
-];
 
 // this is calling the Blade template welcome.blade.php in the /resources/views
 Route::get('/', function () {
@@ -63,22 +9,20 @@ Route::get('/', function () {
 });
 
 // access a Blade template
-Route::get('/blade', function () use ($tasks) {
-    // pass the sub-phrase that precedes .blade.php i.e. index (of index.blade.php), with variables
+Route::get('/blade', function () {
+
     return view('list', [
-        'tasks' => $tasks,
+        // get all records from the database that were completed.
+        // To get all records use Task::all() or Task::get(); the latter is intended for custom queries.
+        'tasks' => Task::where('completed', true)->get(),
     ]);
+
 })->name('tasks.list');
 
-Route::get('/blade/{id}', function ($id) use ($tasks) {
-    // users may manually enter the ID, so guard against overflows first
-    $task = collect($tasks)->firstWhere('id', $id);
+Route::get('/blade/{id}', function ($id) {
 
-    if (!$task) {
-        abort(ResponseAlias::HTTP_NOT_FOUND);
-    }
-
-    return view('show', ['task' => $task]);
+    // attempt to return the entity, or return a 404 if null
+    return view('show', ['task' => Task::findOrFail($id)]);
 
 })->name('tasks.index');
 

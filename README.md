@@ -164,8 +164,8 @@ and [PostCSS](https://postcss.org/) (the latter two are CSS tools) in the root d
 
 ## Database models
 
-Database models (classes that can be mapped as tables via ORM) are defined in the [Models](/app/Models) directory. One can 
-create a new model with:
+Database models (classes that can be mapped as tables via [Eloquent ORM](https://laravel.com/docs/11.x/eloquent)) are 
+defined in the [Models](/app/Models) directory. One can create a new model with:
 
 ```bash
 php artisan make:model TableName -m
@@ -212,3 +212,10 @@ To clear the database (care not run this in production) and start over with newe
 ```angular2html
 php artisan migrate:refresh --seed
 ```
+
+## Database queries
+
+Laravel will recognise field names and types from the database, the aforementioned Model "Task" does not need to be
+implemented with class members. When performing queries, the entities are of type [Collection](https://laravel.com/docs/11.x/eloquent-collections).
+
+The [Query Builder](https://laravel.com/docs/11.x/queries) documents all the SQL like phrases available to Laravel.
