@@ -127,3 +127,33 @@ php artisan serve --port=9000
 Opening this in a browser will yield a Laravel dashboard.
 
 Close the server (Ubuntu) with CTRL-C.
+
+## Overview of the Laravel directory structure
+
++ [app](/app) - bespoke logic
++ [bootstrap](/bootstrap) - application function definitions
++ [config](/config) - base Laravel configuration (often referring to [.env](.env))
++ [database](/database) - all things database, including SQLite files
++ [node_modules](/node_modules) - NodeJS dependencies
++ [public](/public) - files that would be publicly accessible after deployment (e.g. Apache configuration)
++ [resources](/resources) - project assets, including JS scripts and Blade web templates
++ [routes](/routes) - URL routing
++ [storage](/storage) - Laravel storage and cache
++ [tests](/tests) - automated test files
++ [vendor](/vendor) - Composer managed files for Laravel and the project dependencies
+
+Other Laravel project files in the root directory of note:
+
++ [.editorconfig](.editorconfig) - development configuration typically handling developer tool conventions
++ [.env](.env) - environment variables, developer specific configuration, sometimes sensitive info and not normally 
+  shared with other developers
++ [.env.example](.env.example) - template of .env, this file may contain standards/conventions/defaults that other 
+  developers should follow with their own env., and therefore is distributed with the project
++ [artisan](artisan) - this is a PHP script typically run during development with ```php artisan```
++ [composer.json](composer.json) and [composer.lock](composer.lock) - project libraries/dependencies handled by Composer
+  (and saved in [vendor](/vendor))
++ [package.json](package.json) and [package.lock](package.lock) - frontend-specific libraries/dependencies
++ [phpunit.xml](phpunit.xml) - PHP unit testing configuration
+
+There will also be JS scripts that manage [Vite](https://vite.dev/) (Vue based frontend tools), [Tailwind](https://tailwindcss.com/) 
+and [PostCSS](https://postcss.org/) (the latter two are CSS tools) in the root directory.
