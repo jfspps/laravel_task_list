@@ -2,20 +2,79 @@
 
 use Illuminate\Support\Facades\Route;
 
+class Task
+{
+    public function __construct(
+        public int $id,
+        public string $title,
+        public string $description,
+        public ?string $long_description,
+        public bool $completed,
+        public string $created_at,
+        public string $updated_at
+    ) {
+    }
+}
+
+$tasks = [
+    new Task(
+        1,
+        'Buy groceries',
+        'Task 1 description',
+        'Task 1 long description',
+        false,
+        '2023-03-01 12:00:00',
+        '2023-03-01 12:00:00'
+    ),
+    new Task(
+        2,
+        'Sell old stuff',
+        'Task 2 description',
+        null,
+        false,
+        '2023-03-02 12:00:00',
+        '2023-03-02 12:00:00'
+    ),
+    new Task(
+        3,
+        'Learn programming',
+        'Task 3 description',
+        'Task 3 long description',
+        true,
+        '2023-03-03 12:00:00',
+        '2023-03-03 12:00:00'
+    ),
+    new Task(
+        4,
+        'Take dogs for a walk',
+        'Task 4 description',
+        null,
+        false,
+        '2023-03-04 12:00:00',
+        '2023-03-04 12:00:00'
+    ),
+];
+
 // this is calling the Blade template welcome.blade.php in the /resources/views
 Route::get('/', function () {
     return view('welcome');
 });
 
 // access a Blade template
-Route::get('/blade', function () {
+Route::get('/blade', function () use ($tasks) {
     // pass the sub-phrase that precedes .blade.php i.e. index (of index.blade.php), with variables
     return view('index', [
         // note that the HTML elements are escaped and displayed as literally given, blocking cross-site scripting attacks;
         // HTML elements would have to be defined in the template instead
         'name' => 'JimJom<script></script>',
+        'tasks' => $tasks,
     ]);
-});
+})->name('tasks.show');
+
+Route::get('/blade/{id}', function ($id) use ($tasks) {
+    // pass the sub-phrase that precedes .blade.php i.e. index (of index.blade.php), with variables
+    return 'Task selected: ' . $id . ', ' . $tasks[$id - 1]->title;
+})->name('tasks.index');
 
 $routeList = 'To list all routes defined here (and a few others defined by Laravel), enter: php artisan route:list' . PHP_EOL;
 
