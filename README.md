@@ -70,7 +70,7 @@ npm run dev
 
 ## SQLite
 
-Laravel 11 target SQLite by default as its database, see the [configuration file](.env). This file is not normally
+Laravel 11 target SQLite by default as its database, see ```DB_CONNECTION``` in the [environment variable file](.env). This file is not normally
 shared with other developers.
 
 Install SQLite extension with
@@ -89,7 +89,8 @@ To enable the SQLite driver, uncomment (remove the semicolon) from the following
 
 The database tables are found in [database](/database), resulting from 
 [migration](https://laravel.com/docs/11.x/installation#databases-and-migrations) (version control for databases,
-enabling developers to define and share the application's schema).
+enabling developers to define and share the application's schema). Typically, run a database migration when creating or
+updating a database schema.
 
 To migrate a database (needed if one were to use a database other than SQLite), enter:
 
@@ -98,6 +99,9 @@ php artisan migrate
 ```
 
 With SQLite, this command will generate a SQLite database file: [database.sqlite](/database/database.sqlite).
+
+It is normally good practice to create a different schema for each Laravel project, so each project will involve at
+least one database migration before startup.
 
 ## The Application key
 
@@ -157,3 +161,22 @@ Other Laravel project files in the root directory of note:
 
 There will also be JS scripts that manage [Vite](https://vite.dev/) (Vue based frontend tools), [Tailwind](https://tailwindcss.com/) 
 and [PostCSS](https://postcss.org/) (the latter two are CSS tools) in the root directory.
+
+## Database models
+
+Database models (classes that can be mapped as tables via ORM) are defined in the [Models](/app/Models) directory. One can 
+create a new model with:
+
+```bash
+php artisan make:model TableName -m
+```
+
+The ```-m``` flag also performs a database migration after creating the PHP class. The normal convention is to define 
+the singular class, and Laravel will build the table name as the plural, and apply a lowercase to the first character.
+
+```
+php artisan make:model Task -m
+```
+
+The above model will then be represented by the table ```tasks```, and recorded in the migrations directory 
+(see [migrations](/database/migrations)).
