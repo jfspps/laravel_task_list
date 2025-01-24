@@ -81,7 +81,7 @@ sudo apt install php-sqlite3
 
 (use e.g. ```sudo apt install php8.3-sqlite3``` for a specific version)
 
-To enable the SQLite driver, uncomment (remove the semicolon) from the following lines in php.ini:
+To enable the SQLite driver, uncomment (remove the semicolon) from the following line in php.ini:
 
 ```
 ;extension=sqlite3
