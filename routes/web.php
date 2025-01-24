@@ -2,8 +2,19 @@
 
 use Illuminate\Support\Facades\Route;
 
+// this is calling the Blade template welcome.blade.php in the /resources/views
 Route::get('/', function () {
     return view('welcome');
+});
+
+// access a Blade template
+Route::get('/blade', function () {
+    // pass the sub-phrase that precedes .blade.php i.e. index (of index.blade.php), with variables
+    return view('index', [
+        // note that the HTML elements are escaped and displayed as literally given, blocking cross-site scripting attacks;
+        // HTML elements would have to be defined in the template instead
+        'name' => 'JimJom<script></script>',
+    ]);
 });
 
 $routeList = 'To list all routes defined here (and a few others defined by Laravel), enter: php artisan route:list' . PHP_EOL;

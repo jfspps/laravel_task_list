@@ -136,7 +136,7 @@ Close the server (Ubuntu) with CTRL-C.
 + [database](/database) - all things database, including SQLite files
 + [node_modules](/node_modules) - NodeJS dependencies
 + [public](/public) - files that would be publicly accessible after deployment (e.g. Apache configuration)
-+ [resources](/resources) - project assets, including JS scripts and Blade web templates
++ [resources](/resources) - project assets, including JS scripts and Blade web templates (see [here](/resources/views))
 + [routes](/routes) - URL routing
 + [storage](/storage) - Laravel storage and cache
 + [tests](/tests) - automated test files
