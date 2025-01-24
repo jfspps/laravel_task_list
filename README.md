@@ -180,3 +180,35 @@ php artisan make:model Task -m
 
 The above model will then be represented by the table ```tasks```, and recorded in the migrations directory 
 (see [migrations](/database/migrations)).
+
+
+## Creating fake entities 
+
+Fake entities can be committed to the database using [Factories](/database/factories). The range of data created includes
+timestamps, fake email addresses and tokens, to name a few.
+
+Factories can also be used to update one or attributes of an entity to simulate certain conditions e.g. nullify a 
+state marker (isProcessed, isEnabled).
+
+Create a factory (for the Task entity) with:
+
+```bash
+php artisan make:factory TaskFactory --model=Task
+```
+
+The factory methods can then be called from [Seeders](/database/seeders) which call a factory one or more times, making
+modifications to the database. 
+
+Generally only one Seeder is defined and called per project. Simply add factories to the seeder and then run
+
+```bash
+php artisan db:seed
+```
+
+This would add to the database.
+
+To clear the database (care not run this in production) and start over with newer entities, run:
+
+```angular2html
+php artisan migrate:refresh --seed
+```
