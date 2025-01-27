@@ -23,6 +23,12 @@ Route::get('/blade', function () {
 // form page; note that routes are initialised in the same order presented here (place this before /blade/{id})
 Route::view('/blade/create', 'create');
 
+Route::get('/blade/{task}', function (Task $task) {
+    return view('show', [
+        'task' => $task
+    ]);
+})->name('tasks.show');
+
 Route::get('/blade/{id}', function ($id) {
 
     // attempt to return the entity, or return a 404 if null
@@ -32,7 +38,27 @@ Route::get('/blade/{id}', function ($id) {
 
 Route::post('/blade', function (Request $request) {
     // dump and die (dump data to a web browser view)
-    dd('POST create task route invoked', $request->all());
+//    dd('POST create task route invoked', $request->all());
+
+    // if validation fails, then the user is redirected back to this view with a list of errors (under {{ $errors }}
+    // in the template)
+    $data = $request->validate([
+        'title' => 'required|max:255',
+        'description' => 'required',
+        'long_description' => 'required',
+    ]);
+
+    $task = new Task;
+
+    // still don't need the Model definition
+    $task->title = $data['title'];
+    $task->description = $data['description'];
+    $task->long_description = $data['long_description'];
+
+    $task->save();
+
+    return redirect()->route('tasks.show', ['task' => $task]);
+
 })->name('tasks.store');
 
 $routeList = 'To list all routes defined here (and a few others defined by Laravel), enter: php artisan route:list' . PHP_EOL;

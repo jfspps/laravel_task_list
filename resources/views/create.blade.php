@@ -3,6 +3,8 @@
 @section('title', 'Add task')
 
 @section('content')
+    {{--    list all Laravel errors here --}}
+    {{ $errors }}
     <form method="POST" action="{{ route('tasks.store') }}">
         {{--Laravel middleware builds templates that protect against cross-site request forgery attacks --}}
         @csrf
