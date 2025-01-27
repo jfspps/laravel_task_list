@@ -13,9 +13,8 @@ Route::get('/', function () {
 Route::get('/blade', function () {
 
     return view('list', [
-        // get all records from the database that were completed.
-        // To get all records use Task::all() or Task::get(); the latter is intended for custom queries.
-        'tasks' => Task::where('completed', false)->get(),
+        // get all records from the database (entities created recently coming first) and paginate, optionally, in blocks of ten
+        'tasks' => Task::latest()->paginate(10),
     ]);
 
 })->name('tasks.list');

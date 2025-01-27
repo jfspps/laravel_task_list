@@ -9,4 +9,14 @@
     @empty
         <div>No tasks presented</div>
     @endforelse
+
+    @if($tasks->count())
+        <br/>
+        <nav>
+            {{-- Establish a Previous and Next link between paginated lists, while also setting up page number
+            parameters in the URL --}}
+            {{ $tasks->links() }}
+        </nav>
+    @endif
+
 @endsection
