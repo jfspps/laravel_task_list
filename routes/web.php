@@ -65,6 +65,20 @@ Route::put('/blade/{task}', function (TaskRequest $request, Task $task) {
 
 })->name('tasks.update');
 
+Route::delete('/blade/{task}', function (Task $task) {
+    // HTTP 404 would be automatically returned if task not found
+
+    $title = $task->title;
+
+    // hard-delete
+    $task->delete();
+
+    return redirect()->route('tasks.list')
+        ->with('success', 'Task, ' . $title . ', deleted!');
+
+})->name('tasks.destroy');
+
+
 $routeList = 'To list all routes defined here (and a few others defined by Laravel), enter: php artisan route:list' . PHP_EOL;
 
 // path parameters (note we are passing an anonymous function so need to give it access to $routeList)
