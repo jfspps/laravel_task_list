@@ -15,7 +15,7 @@ Route::get('/blade', function () {
     return view('list', [
         // get all records from the database that were completed.
         // To get all records use Task::all() or Task::get(); the latter is intended for custom queries.
-        'tasks' => Task::where('completed', true)->get(),
+        'tasks' => Task::where('completed', false)->get(),
     ]);
 
 })->name('tasks.list');
@@ -28,6 +28,13 @@ Route::get('/blade/{task}', function (Task $task) {
         'task' => $task
     ]);
 })->name('tasks.show');
+
+Route::get('/blade/{id}/edit', function ($id) {
+
+    // attempt to return the entity, or return a 404 if null
+    return view('edit', ['task' => Task::findOrFail($id)]);
+
+})->name('tasks.edit');
 
 Route::get('/blade/{id}', function ($id) {
 
@@ -67,6 +74,30 @@ Route::post('/blade', function (Request $request) {
         ->with('success', 'Task created!');
 
 })->name('tasks.store');
+
+Route::put('/blade/{id}', function (Request $request, $id) {
+    $data = $request->validate([
+        'title' => 'required|max:255',
+        'description' => 'required',
+        'long_description' => 'required',
+    ]);
+
+    $task = Task::findOrFail($id);
+
+    // still don't need the Model definition
+    $task->title = $data['title'];
+    $task->description = $data['description'];
+    $task->long_description = $data['long_description'];
+
+    // this handles save/update db transaction automatically
+    $task->save();
+
+    // save key-value "success":"Task created!" to session, flash as message, and then remove the key-value pair from
+    // the session
+    return redirect()->route('tasks.show', ['task' => $task])
+        ->with('success', 'Task updated!');
+
+})->name('tasks.update');
 
 $routeList = 'To list all routes defined here (and a few others defined by Laravel), enter: php artisan route:list' . PHP_EOL;
 

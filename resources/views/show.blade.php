@@ -12,8 +12,8 @@
         <p>{{ $task->long_description }}</p>
     @endisset
 
-    <p>{{ $task->created_at }}</p>
-    <p>{{ $task->updated_at }}</p>
+    <p>Created at: {{ $task->created_at }}</p>
+    <p>Updated at: {{ $task->updated_at }}</p>
 @endsection
 
 {{--Check the page source to see this template has a head and body element--}}
