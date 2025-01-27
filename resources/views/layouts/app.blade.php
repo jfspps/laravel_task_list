@@ -13,6 +13,7 @@
     <div style="color: green; font-size: 0.8rem; background: lightgreen">
         {{ session('success') }}
     </div>
+    <br/>
 @endif
 
 <div>
