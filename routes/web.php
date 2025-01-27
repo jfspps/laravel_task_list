@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Task;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 // this is calling the Blade template welcome.blade.php in the /resources/views
@@ -19,12 +20,20 @@ Route::get('/blade', function () {
 
 })->name('tasks.list');
 
+// form page; note that routes are initialised in the same order presented here (place this before /blade/{id})
+Route::view('/blade/create', 'create');
+
 Route::get('/blade/{id}', function ($id) {
 
     // attempt to return the entity, or return a 404 if null
     return view('show', ['task' => Task::findOrFail($id)]);
 
 })->name('tasks.index');
+
+Route::post('/blade', function (Request $request) {
+    // dump and die (dump data to a web browser view)
+    dd('POST create task route invoked', $request->all());
+})->name('tasks.store');
 
 $routeList = 'To list all routes defined here (and a few others defined by Laravel), enter: php artisan route:list' . PHP_EOL;
 
