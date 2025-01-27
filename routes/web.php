@@ -29,17 +29,20 @@ Route::get('/blade/{task}', function (Task $task) {
     ]);
 })->name('tasks.show');
 
-Route::get('/blade/{id}/edit', function ($id) {
+Route::get('/blade/{task}/edit', function (Task $task) {
 
-    // attempt to return the entity, or return a 404 if null
-    return view('edit', ['task' => Task::findOrFail($id)]);
+    // attempt to return the entity, or return a 404 if null;
+    // Apply route model binding: inject the entity by some parameter (in this case primary key) and let Laravel
+    // find the entity automatically. By default, will still expect the primary key of the entity, so we
+    // can replace the literal ID and let Laravel imply through defaults
+    return view('edit', ['task' => $task]);
 
 })->name('tasks.edit');
 
-Route::get('/blade/{id}', function ($id) {
+Route::get('/blade/{task}', function (Task $task) {
 
     // attempt to return the entity, or return a 404 if null
-    return view('show', ['task' => Task::findOrFail($id)]);
+    return view('show', ['task' => $task]);
 
 })->name('tasks.index');
 
@@ -75,14 +78,14 @@ Route::post('/blade', function (Request $request) {
 
 })->name('tasks.store');
 
-Route::put('/blade/{id}', function (Request $request, $id) {
+Route::put('/blade/{task}', function (Request $request, Task $task) {
     $data = $request->validate([
         'title' => 'required|max:255',
         'description' => 'required',
         'long_description' => 'required',
     ]);
 
-    $task = Task::findOrFail($id);
+    // Laravel will automatically return a 404
 
     // still don't need the Model definition
     $task->title = $data['title'];

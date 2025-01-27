@@ -12,7 +12,7 @@
 @endsection
 
 @section('content')
-    <form method="POST" action="{{ route('tasks.update', ['id' => $task->id]) }}">
+    <form method="POST" action="{{ route('tasks.update', ['task' => $task->id]) }}">
         @csrf
         {{-- HTML forms only support GET and POST; apply method spoofing with @method: redirect to a route with PUT instead of POST --}}
         @method('PUT')
