@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Requests\TaskRequest;
 use App\Models\Task;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -46,28 +47,15 @@ Route::get('/blade/{task}', function (Task $task) {
 
 })->name('tasks.index');
 
-Route::post('/blade', function (Request $request) {
-    // dump and die (dump data to a web browser view)
-//    dd('POST create task route invoked', $request->all());
-
-    // if validation fails, then the user is redirected back to this view with a list of errors (under {{ $errors }}
-    // in the template).
-    $data = $request->validate([
-        'title' => 'required|max:255',
-        'description' => 'required',
-        'long_description' => 'required',
-    ]);
-
-    // Errors are saved to the User's session (browser gets a copy as a cookie) and can be saved to
-    // /storage/framework/sessions, or saved to the sessions db table (see .env for SESSION_DRIVER), the JSON payload
-    // is base64 encoded
+Route::post('/blade', function (TaskRequest $request) {
+    $validatedData = $request->validated();
 
     $task = new Task;
 
     // still don't need the Model definition
-    $task->title = $data['title'];
-    $task->description = $data['description'];
-    $task->long_description = $data['long_description'];
+    $task->title = $validatedData['title'];
+    $task->description = $validatedData['description'];
+    $task->long_description = $validatedData['long_description'];
 
     $task->save();
 
@@ -78,19 +66,13 @@ Route::post('/blade', function (Request $request) {
 
 })->name('tasks.store');
 
-Route::put('/blade/{task}', function (Request $request, Task $task) {
-    $data = $request->validate([
-        'title' => 'required|max:255',
-        'description' => 'required',
-        'long_description' => 'required',
-    ]);
-
-    // Laravel will automatically return a 404
+Route::put('/blade/{task}', function (TaskRequest $request, Task $task) {
+    $validatedData = $request->validated();
 
     // still don't need the Model definition
-    $task->title = $data['title'];
-    $task->description = $data['description'];
-    $task->long_description = $data['long_description'];
+    $task->title = $validatedData['title'];
+    $task->description = $validatedData['description'];
+    $task->long_description = $validatedData['long_description'];
 
     // this handles save/update db transaction automatically
     $task->save();
