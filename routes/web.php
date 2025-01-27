@@ -2,7 +2,6 @@
 
 use App\Http\Requests\TaskRequest;
 use App\Models\Task;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 // this is calling the Blade template welcome.blade.php in the /resources/views
@@ -22,13 +21,7 @@ Route::get('/blade', function () {
 })->name('tasks.list');
 
 // form page; note that routes are initialised in the same order presented here (place this before /blade/{id})
-Route::view('/blade/create', 'create');
-
-Route::get('/blade/{task}', function (Task $task) {
-    return view('show', [
-        'task' => $task
-    ]);
-})->name('tasks.show');
+Route::view('/blade/create', 'create')->name('tasks.create');
 
 Route::get('/blade/{task}/edit', function (Task $task) {
 
@@ -41,27 +34,20 @@ Route::get('/blade/{task}/edit', function (Task $task) {
 })->name('tasks.edit');
 
 Route::get('/blade/{task}', function (Task $task) {
-
-    // attempt to return the entity, or return a 404 if null
-    return view('show', ['task' => $task]);
-
-})->name('tasks.index');
+    return view('show', [
+        'task' => $task
+    ]);
+})->name('tasks.show');
 
 Route::post('/blade', function (TaskRequest $request) {
     $validatedData = $request->validated();
 
-    $task = new Task;
-
-    // still don't need the Model definition
-    $task->title = $validatedData['title'];
-    $task->description = $validatedData['description'];
-    $task->long_description = $validatedData['long_description'];
-
-    $task->save();
+    // instantiates and commits a new Task based on the array
+    $task = Task::create($validatedData);
 
     // save key-value "success":"Task created!" to session, flash as message, and then remove the key-value pair from
     // the session
-    return redirect()->route('tasks.show', ['task' => $task])
+    return redirect()->route('tasks.show', ['task' => $task->id])
         ->with('success', 'Task created!');
 
 })->name('tasks.store');
@@ -69,17 +55,12 @@ Route::post('/blade', function (TaskRequest $request) {
 Route::put('/blade/{task}', function (TaskRequest $request, Task $task) {
     $validatedData = $request->validated();
 
-    // still don't need the Model definition
-    $task->title = $validatedData['title'];
-    $task->description = $validatedData['description'];
-    $task->long_description = $validatedData['long_description'];
-
-    // this handles save/update db transaction automatically
-    $task->save();
+    // updates the Task based on the array
+    $task->update($validatedData);
 
     // save key-value "success":"Task created!" to session, flash as message, and then remove the key-value pair from
     // the session
-    return redirect()->route('tasks.show', ['task' => $task])
+    return redirect()->route('tasks.show', ['task' => $task->id])
         ->with('success', 'Task updated!');
 
 })->name('tasks.update');

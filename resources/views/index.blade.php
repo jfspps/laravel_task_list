@@ -40,8 +40,8 @@
 <br/>
 
 @forelse($tasks as $theTask)
-    {{--route() generates a URL; pass a key-value pair "id":"theTasksId" to the route with name tasks.index--}}
-    <li><a href="{{ route('tasks.index', ['id' => $theTask->id]) }}">{{ $theTask->title }}</a></li>
+    {{--route() generates a URL; pass a key-value pair "task":"theTasksId" to the route with name tasks.show--}}
+    <li><a href="{{ route('tasks.show', ['task' => $theTask->id]) }}">{{ $theTask->title }}</a></li>
 @empty
     <div>No tasks presented</div>
 @endforelse

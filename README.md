@@ -219,3 +219,12 @@ Laravel will recognise field names and types from the database, the aforemention
 implemented with class members. When performing queries, the entities are of type [Collection](https://laravel.com/docs/11.x/eloquent-collections).
 
 The [Query Builder](https://laravel.com/docs/11.x/queries) documents all the SQL like phrases available to Laravel.
+
+## Form Requests
+
+These classes define authorisation and validation of HTTP requests and are located in [/app/Http/Requests](/app/Http/Requests).
+They can be initialised as follows for Task entities:
+
+```bash
+$ php artisan make:request TaskRequest
+```
