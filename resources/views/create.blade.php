@@ -13,7 +13,7 @@
 
 @section('content')
     {{--    list all Laravel errors here --}}
-{{--    {{ $errors }}--}}
+    {{--    {{ $errors }}--}}
     <form method="POST" action="{{ route('tasks.store') }}">
         {{--Laravel middleware builds templates that protect against cross-site request forgery attacks --}}
         @csrf
@@ -21,7 +21,9 @@
             <label for="title">
                 Task title
             </label>
-            <input name="title" id="title"/>
+
+            {{-- HTML form POST only: get Laravel to recall valid data entry --}}
+            <input name="title" id="title" value="{{ old('title') }}"/>
         </div>
 
         @error('title')
@@ -34,7 +36,11 @@
             <label for="description">
                 Description
             </label>
-            <textarea name="description" id="description" rows="5"></textarea>
+
+            {{-- HTML form POST only: get Laravel to recall valid data entry --}}
+            <textarea name="description" id="description" rows="5">
+                {{ old('description') }}
+            </textarea>
         </div>
         @error('description')
         <p class="error-message">
@@ -46,7 +52,11 @@
             <label for="long_description">
                 Long description
             </label>
-            <textarea name="long_description" id="long_description" rows="10"></textarea>
+
+            {{-- HTML form POST only: get Laravel to recall valid data entry --}}
+            <textarea name="long_description" id="long_description" rows="10">
+                {{ old('long_description') }}
+            </textarea>
         </div>
         @error('long_description')
         <p class="error-message">
