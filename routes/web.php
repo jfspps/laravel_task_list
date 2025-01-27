@@ -41,12 +41,16 @@ Route::post('/blade', function (Request $request) {
 //    dd('POST create task route invoked', $request->all());
 
     // if validation fails, then the user is redirected back to this view with a list of errors (under {{ $errors }}
-    // in the template)
+    // in the template).
     $data = $request->validate([
         'title' => 'required|max:255',
         'description' => 'required',
         'long_description' => 'required',
     ]);
+
+    // Errors are saved to the User's session (browser gets a copy as a cookie) and can be saved to
+    // /storage/framework/sessions, or saved to the sessions db table (see .env for SESSION_DRIVER), the JSON payload
+    // is base64 encoded
 
     $task = new Task;
 
@@ -57,7 +61,10 @@ Route::post('/blade', function (Request $request) {
 
     $task->save();
 
-    return redirect()->route('tasks.show', ['task' => $task]);
+    // save key-value "success":"Task created!" to session, flash as message, and then remove the key-value pair from
+    // the session
+    return redirect()->route('tasks.show', ['task' => $task])
+        ->with('success', 'Task created!');
 
 })->name('tasks.store');
 
