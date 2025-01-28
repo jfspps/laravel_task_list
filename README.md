@@ -232,3 +232,7 @@ $ php artisan make:request TaskRequest
 # CSS
 
 This project uses [Tailwind CSS](https://tailwindcss.com/)
+
+# JS
+
+This project uses a lightweight JS framework: [AlpineJS](https://alpinejs.dev/)

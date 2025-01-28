@@ -3,6 +3,7 @@
 <head>
     <title>Task List App</title>
     <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+    <script src="//unpkg.com/alpinejs" defer></script>
 
     {{-- blade-formatter-disable --}}
     <style type="text/tailwindcss">
@@ -36,16 +37,39 @@
 <body class="container mx-auto mt-10 max-w-lg">
 <h1 class="mb-4 text-2xl">@yield('title')</h1>
 
-{{-- to check: getting session key-value pairs only accessible from app.blade.php? --}}
-@if(session()->has('success'))
-    <div style="color: green; font-size: 0.8rem; background: lightgreen">
-        {{ session('success') }}
-    </div>
-    <br/>
-@endif
+{{-- x-data and other x-literals are AlpineJS related, start by setting flash to true --}}
+<div x-data="{ flash: true }">
 
-<div>
-    @yield('content')
+    {{-- to check: getting session key-value pairs only accessible from app.blade.php? --}}
+    @if(session()->has('success'))
+
+        {{-- the nearest POSITIONed ancestor; taking this out means the X button would be positioned relative to the viewport --}}
+        {{-- AlpineJS: show this div is flash is true (true as assigned above and by default on page load)--}}
+        <div x-show="flash"
+             class="relative mb-10 rounded border border-green-400 bg-green-100 px-4 py-3 text-lg text-green-700"
+             role="alert">
+            <strong class="font-bold">Success!</strong>
+            <div>
+                {{ session('success') }}
+            </div>
+
+            {{-- place the cross top-right by defining the CSS class, positioned relative to the nearest POSITIONed
+            ancestor/parent, not to the viewport --}}
+            <span class="absolute top-0 bottom-0 right-0 px-4 py-3">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+               stroke-width="1.5"
+               {{-- listener which on click, sets flash to false, therefore hiding the flash message --}}
+               @click="flash = false"
+               stroke="currentColor" class="h-6 w-6 cursor-pointer">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+        </span>
+        </div>
+    @endif
+
+    <div>
+        @yield('content')
+    </div>
 </div>
 </body>
 </html>
