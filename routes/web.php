@@ -77,6 +77,13 @@ Route::delete('/blade/{task}', function (Task $task) {
 
 })->name('tasks.destroy');
 
+Route::put('/blade/{task}/toggle-complete', function (Task $task) {
+    $task->toggleCompleted();
+
+    return redirect()->back()
+        ->with('success', 'Task completion toggled!');
+})->name('tasks.toggle-complete');
+
 
 $routeList = 'To list all routes defined here (and a few others defined by Laravel), enter: php artisan route:list' . PHP_EOL;
 

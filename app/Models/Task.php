@@ -11,4 +11,9 @@ class Task extends Model
 
     // explicitly indicate/permit which members can be filled in via create() and update()
     protected $fillable = ['title', 'description', 'long_description'];
+
+    public function toggleCompleted() : void{
+        $this->completed = !$this->completed;
+        $this->save();
+    }
 }

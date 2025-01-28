@@ -15,8 +15,35 @@
     <p>Created at: {{ $task->created_at }}</p>
     <p>Updated at: {{ $task->updated_at }}</p>
 
+    <p>
+        @if($task->completed)
+            Status: Completed
+        @else
+            Status: Not completed
+        @endif
+    </p>
+
     <div>
-        <form action="{{ route('tasks.destroy', ['task' => $task->id]) }}" method="POST">
+        {{-- Laravel will assume the entity has a primary key and use that when mapping to the endpoint --}}
+        <a href="{{ route('tasks.edit', ['task' => $task]) }}">Edit</a>
+        <br/>
+        <br/>
+    </div>
+
+    <div>
+        <form method="POST" action="{{ route('tasks.toggle-complete', ['task' => $task]) }}">
+            @csrf
+            @method('PUT')
+
+            <button type="submit">
+                Mark as {{ $task->completed ? 'not completed' : 'completed' }}
+            </button>
+        </form>
+        <br/>
+    </div>
+
+    <div>
+        <form action="{{ route('tasks.destroy', ['task' => $task]) }}" method="POST">
             @csrf
             @method('DELETE')
             <button type="submit">Delete</button>
