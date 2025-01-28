@@ -228,3 +228,7 @@ They can be initialised as follows for Task entities:
 ```bash
 $ php artisan make:request TaskRequest
 ```
+
+# CSS
+
+This project uses [Tailwind CSS](https://tailwindcss.com/)
